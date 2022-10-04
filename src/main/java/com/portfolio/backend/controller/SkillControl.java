@@ -45,7 +45,7 @@ public class SkillControl {
         return new ResponseEntity(new MessageCustom("Successful operation"), HttpStatus.OK);
     }
      @GetMapping("/skills/detail/{id}")
-    public ResponseEntity<Skills> getById(@PathVariable("id") int id){
+    public ResponseEntity<Skills> getById(@PathVariable("id") Long id){
         if(!skillS.existsById(id))
             return new ResponseEntity(new MessageCustom("Doesn't exists"), HttpStatus.NOT_FOUND);
         Skills Skills = skillS.getOne(id).get();
@@ -53,13 +53,10 @@ public class SkillControl {
     }
     
     @PutMapping("/skills/update/{id}")
-    public ResponseEntity<?> update(@PathVariable("id") int id, @RequestBody SkillDto SkillDto) {
+    public ResponseEntity<?> update(@PathVariable("id") Long id, @RequestBody SkillDto SkillDto) {
         if(!skillS.existsById(id))
             return new ResponseEntity(new MessageCustom("Doesn't exists"), HttpStatus.NOT_FOUND);
-        //expendable
-        if(skillS.existsByName(SkillDto.getName()) && skillS.getByName(SkillDto.getName()).get().getId() != id)
-            return new ResponseEntity(new MessageCustom("Already exists"), HttpStatus.BAD_REQUEST);
-        
+                
         if(StringUtils.isBlank(SkillDto.getName()))
             return new ResponseEntity(new MessageCustom("This field is required"),HttpStatus.BAD_REQUEST);
         Skills Skills = skillS.getOne(id).get();
@@ -70,7 +67,7 @@ public class SkillControl {
     }
     
     @DeleteMapping("/skills/delete/{id}")
-    public ResponseEntity<?> delete(@PathVariable("id") int id) {
+    public ResponseEntity<?> delete(@PathVariable("id") Long id) {
         if (!skillS.existsById(id)) {
             return new ResponseEntity(new MessageCustom("Doesn't exists"), HttpStatus.NOT_FOUND);
         }
