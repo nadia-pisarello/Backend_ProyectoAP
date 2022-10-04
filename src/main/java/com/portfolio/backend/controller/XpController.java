@@ -21,20 +21,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("workXp")
+@RequestMapping("/api/v1")
 @CrossOrigin(origins = "http://localhost:4200")
 public class XpController {
 
     @Autowired
     XpService xpService;
 
-    @GetMapping("/list")
+    @GetMapping("/workXp/list")
     public ResponseEntity<WorkXp> list() {
         List<WorkXp> list = xpService.list();
         return new ResponseEntity(list, HttpStatus.OK);
     }
     
-    @PostMapping("/create")
+    @PostMapping("/workXp/create")
     public ResponseEntity<?> create(@RequestBody WorkDto workDto) {
         if (StringUtils.isBlank(workDto.getXpName())) {
             return new ResponseEntity(new MessageCustom("This field is required"), HttpStatus.BAD_REQUEST);
@@ -46,7 +46,7 @@ public class XpController {
         xpService.saveXp(workXp);
         return new ResponseEntity(new MessageCustom("Successful operation"), HttpStatus.OK);
     }
-     @GetMapping("/detail/{id}")
+     @GetMapping("/workXp/detail/{id}")
     public ResponseEntity<WorkXp> getById(@PathVariable("id") int id){
         if(!xpService.existsById(id))
             return new ResponseEntity(new MessageCustom("Doesn't exists"), HttpStatus.NOT_FOUND);
@@ -54,7 +54,7 @@ public class XpController {
         return new ResponseEntity(workXp, HttpStatus.OK);
     }
     
-    @PutMapping("/update/{id}")
+    @PutMapping("/workXp/update/{id}")
     public ResponseEntity<?> update(@PathVariable("id") int id, @RequestBody WorkDto workDto) {
         if(!xpService.existsById(id))
             return new ResponseEntity(new MessageCustom("Doesn't exists"), HttpStatus.NOT_FOUND);
@@ -72,7 +72,7 @@ public class XpController {
         
     }
     
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/workXp/delete/{id}")
     public ResponseEntity<?> delete(@PathVariable("id") int id) {
         if (!xpService.existsById(id)) {
             return new ResponseEntity(new MessageCustom("Doesn't exists"), HttpStatus.NOT_FOUND);

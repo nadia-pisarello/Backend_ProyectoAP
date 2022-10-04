@@ -20,7 +20,7 @@ public class EducationCont {
     @Autowired
     EducationServ educationServ;
     
-    @GetMapping("/education")
+    @GetMapping("/education/list")
     public ResponseEntity<List<Education>> listEducation(){
         List<Education> list = educationServ.listEducation();
         return new ResponseEntity(list, HttpStatus.OK);

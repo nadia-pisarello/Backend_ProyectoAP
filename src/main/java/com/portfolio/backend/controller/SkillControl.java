@@ -21,18 +21,18 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
-@RequestMapping("/skills")
+@RequestMapping("/api/v1")
 public class SkillControl {
     @Autowired
     SkillsServ skillS;
     
-    @GetMapping("/list")
+    @GetMapping("/skills/list")
     public ResponseEntity<Skills> list() {
         List<Skills> list = skillS.list();
         return new ResponseEntity(list, HttpStatus.OK);
     }
     
-    @PostMapping("/create")
+    @PostMapping("/skills/create")
     public ResponseEntity<?> create(@RequestBody SkillDto SkillDto) {
         if (StringUtils.isBlank(SkillDto.getName())) {
             return new ResponseEntity(new MessageCustom("This field is required"), HttpStatus.BAD_REQUEST);
@@ -44,7 +44,7 @@ public class SkillControl {
         skillS.save(Skills);
         return new ResponseEntity(new MessageCustom("Successful operation"), HttpStatus.OK);
     }
-     @GetMapping("/detail/{id}")
+     @GetMapping("/skills/detail/{id}")
     public ResponseEntity<Skills> getById(@PathVariable("id") int id){
         if(!skillS.existsById(id))
             return new ResponseEntity(new MessageCustom("Doesn't exists"), HttpStatus.NOT_FOUND);
@@ -52,7 +52,7 @@ public class SkillControl {
         return new ResponseEntity(Skills, HttpStatus.OK);
     }
     
-    @PutMapping("/update/{id}")
+    @PutMapping("/skills/update/{id}")
     public ResponseEntity<?> update(@PathVariable("id") int id, @RequestBody SkillDto SkillDto) {
         if(!skillS.existsById(id))
             return new ResponseEntity(new MessageCustom("Doesn't exists"), HttpStatus.NOT_FOUND);
@@ -69,7 +69,7 @@ public class SkillControl {
         
     }
     
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/skills/delete/{id}")
     public ResponseEntity<?> delete(@PathVariable("id") int id) {
         if (!skillS.existsById(id)) {
             return new ResponseEntity(new MessageCustom("Doesn't exists"), HttpStatus.NOT_FOUND);
