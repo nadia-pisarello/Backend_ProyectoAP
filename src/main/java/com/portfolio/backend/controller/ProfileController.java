@@ -1,10 +1,15 @@
 
 package com.portfolio.backend.controller;
 
+import com.portfolio.backend.dto.ProfileDto;
+import com.portfolio.backend.model.MessageCustom;
 import com.portfolio.backend.model.Profile;
 import com.portfolio.backend.service.ProfileService;
 import java.util.List;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -42,19 +47,21 @@ public class ProfileController {
     }
         
     @PutMapping("/profile/update/{id}")
-    public Profile editProfile(@PathVariable Long id,
-            @RequestParam("name") String name,
-            @RequestParam("lastname") String lastname,
-            @RequestParam("position") String position,
-            @RequestParam("description") String description){
+    public ResponseEntity<?> editProfile(@PathVariable Long id, @RequestBody ProfileDto profileDto){
+        if(!profileServ.existsProfile(id)) return new ResponseEntity(new MessageCustom("It doesn't exists"), HttpStatus.NOT_FOUND);
+        if(StringUtils.isBlank(profileDto.getName())) return new ResponseEntity(new MessageCustom("Field required"),HttpStatus.BAD_REQUEST);
+        if(StringUtils.isBlank(profileDto.getLastname())) return new ResponseEntity(new MessageCustom("Field required"),HttpStatus.BAD_REQUEST);
+        if(StringUtils.isBlank(profileDto.getPosition())) return new ResponseEntity(new MessageCustom("Field required"),HttpStatus.BAD_REQUEST);
+        if(StringUtils.isBlank(profileDto.getDescription())) return new ResponseEntity(new MessageCustom("Field required"),HttpStatus.BAD_REQUEST);
         Profile profile = profileServ.findProfile(id);
-        profile.setName(name);
-        profile.setLastname(lastname);
-        profile.setPosition(position);
-        profile.setDescription(description);
+        profile.setName(profileDto.getName());
+        profile.setLastname(profileDto.getLastname());
+        profile.setPosition(profileDto.getPosition());
+        profile.setDescription(profileDto.getDescription());
         profileServ.createProfile(profile);
-        return profile;
-    }    
+        return new ResponseEntity(new MessageCustom("Successfull operation"), HttpStatus.OK);
+    }   
+       
     
     @GetMapping("/profile/getProfile")
     public Profile findProfile(){

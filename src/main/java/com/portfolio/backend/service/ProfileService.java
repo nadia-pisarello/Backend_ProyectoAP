@@ -28,18 +28,18 @@ public class ProfileService {
         return profileRepo.findById(id).orElse(null);
     }
 
-    public void editProfile(Long id, Profile profile) {
+    /*public void editProfile(Long id) {
 
         profileRepo.findById(id).map(
                 editProfile -> {
-                    editProfile.setName(profile.getName());
-                    editProfile.setLastname(profile.getLastname());
-                    editProfile.setPosition(profile.getPosition());
-                    editProfile.setDescription(profile.getDescription());
+                    editProfile.setName(profileRepo.getReferenceById(id).getName());
+                    editProfile.setLastname(profileRepo.getReferenceById(id).getLastname());
+                    editProfile.setPosition(profileRepo.getReferenceById(id).getPosition());
+                    editProfile.setDescription(profileRepo.getReferenceById(id).getDescription());
 
                     return profileRepo.save(editProfile);
                 });
-    }
+    }*/
     
     public Boolean existsProfile(Long id){
         try { profileRepo.findById(id);

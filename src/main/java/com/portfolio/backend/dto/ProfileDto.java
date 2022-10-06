@@ -11,7 +11,7 @@ public class ProfileDto implements Serializable {
     @NotBlank
     private String lastname;
     
-    private String title; //referring to the position
+    private String position;
     private String description;
 
     public ProfileDto() {
@@ -23,16 +23,16 @@ public class ProfileDto implements Serializable {
     }
     
     
-    public ProfileDto(String name, String lastname, String title) {
+    public ProfileDto(String name, String lastname, String position) {
         this.name = name;
         this.lastname = lastname;
-        this.title = title;
+        this.position = position;
     }
 
-    public ProfileDto(String name, String lastname, String title, String description) {
+    public ProfileDto(String name, String lastname, String position, String description) {
         this.name = name;
         this.lastname = lastname;
-        this.title = title;
+        this.position = position;
         this.description = description;
     }
     
