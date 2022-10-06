@@ -23,57 +23,66 @@ import org.springframework.web.bind.annotation.RestController;
 @CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("/api/v1")
 public class SkillControl {
+
     @Autowired
-    SkillsServ skillS;
-    
+    SkillsServ skillServ;
+
     @GetMapping("/skills/list")
-    public ResponseEntity<Skills> list() {
-        List<Skills> list = skillS.list();
+    public ResponseEntity<Skills> listSkill() {
+        List<Skills> list = skillServ.listSkill();
         return new ResponseEntity(list, HttpStatus.OK);
     }
-    
+
     @PostMapping("/skills/create")
-    public ResponseEntity<?> create(@RequestBody SkillDto SkillDto) {
-        if (StringUtils.isBlank(SkillDto.getName())) {
+    public ResponseEntity<?> create(@RequestBody SkillDto skillDto) {
+        if (StringUtils.isBlank(skillDto.getName())) {
             return new ResponseEntity(new MessageCustom("This field is required"), HttpStatus.BAD_REQUEST);
         }
         //expendable
-        if(skillS.existsByName(SkillDto.getName()))
-            return new ResponseEntity(new MessageCustom("Already exists"),HttpStatus.BAD_REQUEST);
-        Skills Skills = new Skills(SkillDto.getName());
-        skillS.save(Skills);
+        if (skillServ.existsByName(skillDto.getName())) {
+            return new ResponseEntity(new MessageCustom("Already exists"), HttpStatus.BAD_REQUEST);
+        }
+        Skills skills = new Skills(skillDto.getName(), skillDto.getImage());
+        skillServ.save(skills);
         return new ResponseEntity(new MessageCustom("Successful operation"), HttpStatus.OK);
     }
-     @GetMapping("/skills/detail/{id}")
-    public ResponseEntity<Skills> getById(@PathVariable("id") Long id){
-        if(!skillS.existsById(id))
-            return new ResponseEntity(new MessageCustom("Doesn't exists"), HttpStatus.NOT_FOUND);
-        Skills Skills = skillS.getOne(id).get();
-        return new ResponseEntity(Skills, HttpStatus.OK);
-    }
-    
-    @PutMapping("/skills/update/{id}")
-    public ResponseEntity<?> update(@PathVariable("id") Long id, @RequestBody SkillDto SkillDto) {
-        if(!skillS.existsById(id))
-            return new ResponseEntity(new MessageCustom("Doesn't exists"), HttpStatus.NOT_FOUND);
-                
-        if(StringUtils.isBlank(SkillDto.getName()))
-            return new ResponseEntity(new MessageCustom("This field is required"),HttpStatus.BAD_REQUEST);
-        Skills Skills = skillS.getOne(id).get();
-        skillS.save(Skills);
-                
-        return new ResponseEntity(new MessageCustom("Successful operation"), HttpStatus.OK);
-        
-    }
-    
-    @DeleteMapping("/skills/delete/{id}")
-    public ResponseEntity<?> delete(@PathVariable("id") Long id) {
-        if (!skillS.existsById(id)) {
+
+    @GetMapping("/skills/detail/{id}")
+    public ResponseEntity<Skills> getById(@PathVariable("id") Long id) {
+        if (!skillServ.existsById(id)) {
             return new ResponseEntity(new MessageCustom("Doesn't exists"), HttpStatus.NOT_FOUND);
         }
-        skillS.delete(id);
+        Skills skills = skillServ.getOne(id).get();
+        return new ResponseEntity(skills, HttpStatus.OK);
+    }
+
+    @PutMapping("/skills/update/{id}")
+    public ResponseEntity<?> update(@PathVariable("id") Long id, @RequestBody SkillDto skillDto) {
+        if (!skillServ.existsById(id)) {
+            return new ResponseEntity(new MessageCustom("Doesn't exists"), HttpStatus.NOT_FOUND);
+        }
+        if (skillServ.existsByName(skillDto.getName()) && skillServ.getByName(skillDto.getName()).get().getId().equals(id)) {
+            return new ResponseEntity(new MessageCustom("Already exists"), HttpStatus.BAD_REQUEST);
+        }
+        if (StringUtils.isBlank(skillDto.getName())) {
+            return new ResponseEntity(new MessageCustom("This field is required"), HttpStatus.BAD_REQUEST);
+        }
+        Skills skills = skillServ.getOne(id).get();
+        skills.setName(skillDto.getName());
+        skills.setImage(skillDto.getImage());
+        skillServ.save(skills);
+
+        return new ResponseEntity(new MessageCustom("Successful operation"), HttpStatus.OK);
+
+    }
+
+    @DeleteMapping("/skills/delete/{id}")
+    public ResponseEntity<?> delete(@PathVariable("id") Long id) {
+        if (!skillServ.existsById(id)) {
+            return new ResponseEntity(new MessageCustom("Doesn't exists"), HttpStatus.NOT_FOUND);
+        }
+        skillServ.delete(id);
         return new ResponseEntity(new MessageCustom("Successful operation"), HttpStatus.OK);
     }
-    
-    
+
 }

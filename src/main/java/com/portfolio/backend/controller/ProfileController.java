@@ -28,7 +28,7 @@ public class ProfileController {
     public List<Profile> getProfile(){
         return profileServ.getProfile();
     }
-    @PostMapping("/profile/create/")
+    @PostMapping("/profile/create")
     public String createUser(@RequestBody Profile profile){
         profileServ.createProfile(profile);
         return "Successful operation";

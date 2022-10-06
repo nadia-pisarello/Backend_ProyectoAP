@@ -43,7 +43,7 @@ public class EducationCont {
         return new ResponseEntity(new MessageCustom("Education eliminated"), HttpStatus.OK);
     }
 
-    @PostMapping("/education/create")
+    @PostMapping("/education")
     public ResponseEntity<?> create(@RequestBody EducationDto educationDto) {
         if (StringUtils.isBlank(educationDto.getTitle())) {
             return new ResponseEntity(new MessageCustom("This field is required"), HttpStatus.BAD_REQUEST);

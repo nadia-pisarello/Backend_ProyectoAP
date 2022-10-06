@@ -47,7 +47,7 @@ public class XpController {
         return new ResponseEntity(new MessageCustom("Successful operation"), HttpStatus.OK);
     }
      @GetMapping("/workXp/detail/{id}")
-    public ResponseEntity<WorkXp> getById(@PathVariable("id") int id){
+    public ResponseEntity<WorkXp> getById(@PathVariable("id") Long id){
         if(!xpService.existsById(id))
             return new ResponseEntity(new MessageCustom("Doesn't exists"), HttpStatus.NOT_FOUND);
         WorkXp workXp = xpService.getOne(id).get();
@@ -55,16 +55,17 @@ public class XpController {
     }
     
     @PutMapping("/workXp/update/{id}")
-    public ResponseEntity<?> update(@PathVariable("id") int id, @RequestBody WorkDto workDto) {
+    public ResponseEntity<?> update(@PathVariable("id") Long id, @RequestBody WorkDto workDto) {
         if(!xpService.existsById(id))
             return new ResponseEntity(new MessageCustom("Doesn't exists"), HttpStatus.NOT_FOUND);
         //expendable
-        if(xpService.existsByNameXp(workDto.getXpName()) && xpService.getByNameXp(workDto.getXpName()).get().getXpId() != id)
+        if(xpService.existsByNameXp(workDto.getXpName()) && xpService.getByNameXp(workDto.getXpName()).get().getXpId().equals(id))
             return new ResponseEntity(new MessageCustom("Already exists"), HttpStatus.BAD_REQUEST);
         
         if(StringUtils.isBlank(workDto.getXpName()))
             return new ResponseEntity(new MessageCustom("This field is required"),HttpStatus.BAD_REQUEST);
         WorkXp workXp = xpService.getOne(id).get();
+        workXp.setXpName(workDto.getXpName());
         workXp.setDescripXp(workDto.getDescripXp());
         xpService.saveXp(workXp);
                 
@@ -73,7 +74,7 @@ public class XpController {
     }
     
     @DeleteMapping("/workXp/delete/{id}")
-    public ResponseEntity<?> delete(@PathVariable("id") int id) {
+    public ResponseEntity<?> delete(@PathVariable("id") Long id) {
         if (!xpService.existsById(id)) {
             return new ResponseEntity(new MessageCustom("Doesn't exists"), HttpStatus.NOT_FOUND);
         }

@@ -14,7 +14,7 @@ public class SkillsServ {
     @Autowired
     SkillsRepo skillsRepo;
     
-    public List<Skills> list(){
+    public List<Skills> listSkill(){
         return skillsRepo.findAll();
     }
     

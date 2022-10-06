@@ -1,11 +1,12 @@
 
 package com.portfolio.backend.model;
 
+import java.io.Serializable;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 
 @Entity
-public class Profile {
+public class Profile implements Serializable {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

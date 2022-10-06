@@ -9,12 +9,14 @@ public class SkillDto {
     
     @NotBlank
     private String name;
+    private String image;
 
     public SkillDto() {
     }
 
-    public SkillDto(String name) {
+    public SkillDto(String name, String image) {
         this.name = name;
+        this.image = image;
     }
     
 }
