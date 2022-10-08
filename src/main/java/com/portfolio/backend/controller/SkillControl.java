@@ -20,20 +20,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("/api/v1")
+@CrossOrigin(origins = "*")
 public class SkillControl {
 
     @Autowired
     SkillsServ skillServ;
 
-    @GetMapping("/skills/list")
+    @GetMapping("/skill")
     public ResponseEntity<Skills> listSkill() {
         List<Skills> list = skillServ.listSkill();
         return new ResponseEntity(list, HttpStatus.OK);
     }
 
-    @PostMapping("/skills/create")
+    @PostMapping("/skill")
     public ResponseEntity<?> create(@RequestBody SkillDto skillDto) {
         if (StringUtils.isBlank(skillDto.getName())) {
             return new ResponseEntity(new MessageCustom("This field is required"), HttpStatus.BAD_REQUEST);
@@ -47,7 +47,7 @@ public class SkillControl {
         return new ResponseEntity(new MessageCustom("Successful operation"), HttpStatus.OK);
     }
 
-    @GetMapping("/skills/detail/{id}")
+    @GetMapping("/skill/{id}")
     public ResponseEntity<Skills> getById(@PathVariable("id") Long id) {
         if (!skillServ.existsById(id)) {
             return new ResponseEntity(new MessageCustom("Doesn't exists"), HttpStatus.NOT_FOUND);
@@ -56,7 +56,7 @@ public class SkillControl {
         return new ResponseEntity(skills, HttpStatus.OK);
     }
 
-    @PutMapping("/skills/update/{id}")
+    @PutMapping("/skill/{id}")
     public ResponseEntity<?> update(@PathVariable("id") Long id, @RequestBody SkillDto skillDto) {
         if (!skillServ.existsById(id)) {
             return new ResponseEntity(new MessageCustom("Doesn't exists"), HttpStatus.NOT_FOUND);
@@ -76,7 +76,7 @@ public class SkillControl {
 
     }
 
-    @DeleteMapping("/skills/delete/{id}")
+    @DeleteMapping("/skill/{id}")
     public ResponseEntity<?> delete(@PathVariable("id") Long id) {
         if (!skillServ.existsById(id)) {
             return new ResponseEntity(new MessageCustom("Doesn't exists"), HttpStatus.NOT_FOUND);

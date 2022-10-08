@@ -15,12 +15,12 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1")
-@CrossOrigin(origins = "http://localhost:4200") //@CrossOrigin(origins = "*") or 
+@CrossOrigin(origins = "*") //@CrossOrigin(origins = "*") or 
 public class EducationCont {
     @Autowired
     EducationServ educationServ;
     
-    @GetMapping("/education/list")
+    @GetMapping("/education")
     public ResponseEntity<List<Education>> listEducation(){
         List<Education> list = educationServ.listEducation();
         return new ResponseEntity(list, HttpStatus.OK);
@@ -34,7 +34,7 @@ public class EducationCont {
         return new ResponseEntity(education, HttpStatus.OK);
     }
     
-    @DeleteMapping("/education/delete/{id}")
+    @DeleteMapping("/education/{id}")
     public ResponseEntity<?> delete(@PathVariable("id") Long id){
         if(!educationServ.existsById(id)){
             return new ResponseEntity(new MessageCustom("It does not exists"), HttpStatus.NOT_FOUND);
@@ -53,7 +53,7 @@ public class EducationCont {
         return new ResponseEntity(new MessageCustom("Successful operation"), HttpStatus.OK);
     }
         
-    @PutMapping("/education/update/{id}")
+    @PutMapping("/education/{id}")
     public ResponseEntity<?> update(@PathVariable("id") Long id, @RequestBody EducationDto educationDto) {
         if(!educationServ.existsEducation(id))
             return new ResponseEntity(new MessageCustom("Doesn't exists"), HttpStatus.NOT_FOUND);
