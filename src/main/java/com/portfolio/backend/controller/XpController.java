@@ -1,4 +1,3 @@
-
 package com.portfolio.backend.controller;
 
 import com.portfolio.backend.model.MessageCustom;
@@ -40,7 +39,8 @@ public class XpController {
         xpService.saveXp(workXp);
         return new ResponseEntity(new MessageCustom("Successful operation"), HttpStatus.OK);
     }
-     @GetMapping("/experience/{id}")
+    
+    @GetMapping("/experience/{id}")
     public ResponseEntity<WorkXp> getById(@PathVariable("id") Long id){
         if(!xpService.existsById(id))
             return new ResponseEntity(new MessageCustom("Doesn't exists"), HttpStatus.NOT_FOUND);
@@ -52,7 +52,7 @@ public class XpController {
     public ResponseEntity<?> update(@PathVariable("id") Long id, @RequestBody WorkDto workDto) {
         if(!xpService.existsById(id))
             return new ResponseEntity(new MessageCustom("Doesn't exists"), HttpStatus.NOT_FOUND);
-        //expendable
+
         if(xpService.existsByNameXp(workDto.getXpName()) && xpService.getByNameXp(workDto.getXpName()).get().getXpId().equals(id))
             return new ResponseEntity(new MessageCustom("Already exists"), HttpStatus.BAD_REQUEST);
         
