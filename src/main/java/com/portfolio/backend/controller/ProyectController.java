@@ -54,10 +54,6 @@ public class ProyectController {
         if (!proyectService.existsById(id)) {
             return new ResponseEntity(new MessageCustom("Doesn't exists"), HttpStatus.NOT_FOUND);
         }
-        //expendable
-        if (proyectService.existsByTitle(proyectDto.getTitle()) && proyectService.getByTitle(proyectDto.getTitle()).get().getId().equals(id)) {
-            return new ResponseEntity(new MessageCustom("Already exists"), HttpStatus.BAD_REQUEST);
-        }
 
         if (StringUtils.isBlank(proyectDto.getTitle())) {
             return new ResponseEntity(new MessageCustom("This field is required"), HttpStatus.BAD_REQUEST);
