@@ -47,11 +47,7 @@ public class EducationCont {
     @PutMapping("/education/{id}")
     public ResponseEntity<?> update(@PathVariable("id") Long id, @RequestBody EducationDto educationDto) {
         if(!educationServ.existsEducation(id))
-            return new ResponseEntity(new MessageCustom("Doesn't exists"), HttpStatus.NOT_FOUND);
-        
-        if(educationServ.existsByTitle(educationDto.getTitle()) && educationServ.getByTitle(educationDto.getTitle()).get().getId().equals(id))
-            return new ResponseEntity(new MessageCustom("Already exists"), HttpStatus.BAD_REQUEST);
-        
+            return new ResponseEntity(new MessageCustom("Doesn't exists"), HttpStatus.NOT_FOUND);                    
         if(StringUtils.isBlank(educationDto.getTitle()))
             return new ResponseEntity(new MessageCustom("This field is required"),HttpStatus.BAD_REQUEST);
              
