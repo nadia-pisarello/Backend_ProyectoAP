@@ -51,11 +51,7 @@ public class XpController {
     @PutMapping("/experience/{id}")
     public ResponseEntity<?> update(@PathVariable("id") Long id, @RequestBody WorkDto workDto) {
         if(!xpService.existsById(id))
-            return new ResponseEntity(new MessageCustom("Doesn't exists"), HttpStatus.NOT_FOUND);
-
-        if(xpService.existsByNameXp(workDto.getXpName()) && xpService.getByNameXp(workDto.getXpName()).get().getXpId().equals(id))
-            return new ResponseEntity(new MessageCustom("Already exists"), HttpStatus.BAD_REQUEST);
-        
+            return new ResponseEntity(new MessageCustom("Doesn't exists"), HttpStatus.NOT_FOUND);        
         if(StringUtils.isBlank(workDto.getXpName()))
             return new ResponseEntity(new MessageCustom("This field is required"),HttpStatus.BAD_REQUEST);
         WorkXp workXp = xpService.getOne(id);
